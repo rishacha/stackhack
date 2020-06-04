@@ -1,7 +1,7 @@
 {
-  "name": "board-server",
+  "name": "taskboard-server",
   "version": "1.0.0",
-  "description": "An apollo-express server for the whiteboard app",
+  "description": "Express app for task management",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --fix src/**",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/joshdcuneo/board.git"
+    "url": "git@github.com:rishacha/stackhack.git"
   },
   "keywords": [
     "apollo",
@@ -22,11 +22,12 @@
     "react"
   ],
   "author": "Josh Cuneo",
+  "contributors": ["Prakhar Patidar","Rishabh Chakrabarti <rishacha.dev@gmail.com>","Surendra Galwa"],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joshdcuneo/board/issues"
+    "url": "https://github.com/rishacha/stackhack/issues"
   },
-  "homepage": "https://github.com/joshdcuneo/board#readme",
+  "homepage": "https://github.com/rishacha/stackhack/#readme",
   "dependencies": {
     "@hapi/joi": "15.0.2",
     "compression": "1.7.4",
