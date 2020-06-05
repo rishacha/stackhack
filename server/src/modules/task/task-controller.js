@@ -1,10 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const TaskModel = require('./task-model')
+import TaskDAO from 'task-service'
 
-router.get('/all', async (req, res) => {
-    let tasks = await TaskModel.find({})
-    res.send(tasks)
+router.get('/all',auth ,async (req, res) => {
+    try {
+        res.send(TaskDAO.getAllTasks(req.userId))
+    } catch {
+
+    }
+    
 });
+
+router
 
 module.exports = router;
