@@ -1,17 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const TaskModel = require('./model')
-// Create an instance of model SomeModel
-var awesome_instance = new SomeModel({ name: 'awesome' });
+const TaskModel = require('./task-model')
 
-// Save the new model instance, passing a callback
-awesome_instance.save(function (err) {
-  if (err) return handleError(err);
-  // saved!
-});
-router.get('/', (req, res) => {
-    console.log('Task Get.')
-    res.send('All tasks')
+router.get('/all', async (req, res) => {
+    let tasks = await TaskModel.find({})
+    res.send(tasks)
 });
 
 module.exports = router;
