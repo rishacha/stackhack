@@ -13,19 +13,26 @@ var formatMessage = function (message) {
 };
 
 // Winston Transport to daily change the log file
-const allLevelTransport = new (DailyRotateFile)({
-  filename: path.join(getEnvVariable('LOG_FILE_PATH'), 'integration-%DATE%.log'),
-  datePattern: 'YYYY-MM-DD-HH',
-  zippedArchive: true,
-  maxSize: '15m',
-  maxFiles: '30d',
-});
+let allLevelTransport;
+let errorTransport;
 
-const errorTransport = new (DailyRotateFile)({
-  filename: path.join(getEnvVariable('LOG_FILE_PATH'), 'integration-error-%DATE%.log'),
-  level: 'error',
-  datePattern: 'YYYY-MM-DD-HH',
-});
+if(process.env.NODE_ENV=='test'){
+  errorTransport = new transports.Console({ level: 'error'});
+  allLevelTransport = new transports.Console( {level:'all'});
+} else {
+  errorTransport = new (DailyRotateFile)({
+    filename: path.join(getEnvVariable('LOG_FILE_PATH'), 'integration-error-%DATE%.log'),
+    level: 'error',
+    datePattern: 'YYYY-MM-DD-HH',
+  });
+  allLevelTransport = new (DailyRotateFile)({
+    filename: path.join(getEnvVariable('LOG_FILE_PATH'), 'integration-%DATE%.log'),
+    datePattern: 'YYYY-MM-DD-HH',
+    zippedArchive: true,
+    maxSize: '15m',
+    maxFiles: '30d',
+  });
+}
 
 // logger instance
 const winstonLogger = createLogger({

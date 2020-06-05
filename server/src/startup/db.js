@@ -1,13 +1,46 @@
 const mongoose = require('mongoose');
 const connection = mongoose.connection;
+import { MongoMemoryServer } from 'mongodb-memory-server';
 const logger = require('./logger');
 
-const db = process.env.DB_URL;
+let db;
+if (process.env.NODE_ENV === 'test') {
+  db = "TEST"
+}
+else {
+  db = process.env.DB_URL;
+}
 
 const connectToDb = () => {
-  mongoose.connect(db, {
-    useNewUrlParser: true,
-  })
+  if(process.env.NODE_ENV=== 'test'){
+    mongoose.Promise = Promise
+    let mongoServer = new MongoMemoryServer();
+    mongoServer.getUri().then((mongoURI)=>{
+      mongoose.connect(mongoURI, {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false, 
+      })
+      mongoose.connection.on('error', (e) => {
+        if (e.message.code === 'ETIMEDOUT') {
+          console.log(e);
+          mongoose.connect(mongoUri, mongooseOpts);
+        }
+        console.log(e);
+      });
+    
+      mongoose.connection.once('open', () => {
+        console.log(`MongoDB successfully connected to ${mongoUri}`);
+      });
+    });
+  } else {
+    mongoose.connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false, 
+    })
     .then(() => {
       logger.info(`Connected to ${db}`)
     })
@@ -15,6 +48,7 @@ const connectToDb = () => {
       logger.error(`Error in connecting to mongo db ${error}`);
       // process.exit(1);
     });
+  }
 }
 
 module.exports = async function () {
