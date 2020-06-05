@@ -2,15 +2,49 @@ const express = require('express');
 const router = express.Router();
 import TaskDAO from 'task-service'
 
-router.get('/all',auth ,async (req, res) => {
+// Create 
+router.post('/create', auth, async (req, res, next) => {
     try {
-        res.send(TaskDAO.getAllTasks(req.userId))
-    } catch {
-
+        await TaskDAO.createTask(req.userId)
+        res.status()
+        res.send("Task created successfully")
+    } catch (err) {
+        next(err)
     }
-    
+})
+
+// Read
+router.get('/all', auth, async (req, res, next) => {
+    try {
+        res.status(200)
+        res.send(await TaskDAO.getAllTasks(req.userId))
+    } catch (err) {
+        next(err)
+    }
+
 });
 
-router
+// Update
+router.put('/update', auth, async (req, res, next) => {
+    try {
+        await TaskDAO.updateTaskById(req.updateDetails,req.taskId,req.userId)
+        res.status(200)
+        res.send("Task updated successfully")
+    } catch (err) {
+        next(err)
+    }
+})
+
+// Delete
+router.delete('/delete', auth, async (req, res, next) => {
+    try {
+        await TaskDAO.deleteTaskById(req.taskId,req.userId)
+        res.status(200)
+        res.send("Task deleted successfully")
+    } catch (err) {
+        next(err)
+    }
+})
+
 
 module.exports = router;
