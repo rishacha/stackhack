@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-import TaskDAO from 'task-service'
-
+import TaskDAO from './task-service'
+import auth from '../../middleware/auth'
 // Create 
 router.post('/create', auth, async (req, res, next) => {
     try {

@@ -25,13 +25,13 @@ const connectToDb = () => {
       mongoose.connection.on('error', (e) => {
         if (e.message.code === 'ETIMEDOUT') {
           console.log(e);
-          mongoose.connect(mongoUri, mongooseOpts);
+          mongoose.connect(mongoURI, mongooseOpts);
         }
         console.log(e);
       });
     
       mongoose.connection.once('open', () => {
-        console.log(`MongoDB successfully connected to ${mongoUri}`);
+        console.log(`MongoDB successfully connected to ${mongoURI}`);
       });
     });
   } else {

@@ -1,11 +1,11 @@
 // Contains business logic for the code
 
-import TaskModel from 'task-model'
+import TaskModel from './task-model'
 import uuid from 'node-uuid'
-import { isTaskValid, isUpdateValid } from 'task-validation'
+import { isTaskValid, isUpdateValid } from './task-validation'
 import e from 'express';
 
-function getAllTasks(userId) {
+async function getAllTasks(userId) {
     try {
         if (userId) {
             taskList = await TaskModel.find({ "userId": userId });
@@ -18,7 +18,7 @@ function getAllTasks(userId) {
     }
 }
 
-function updateTaskById(updateDetails, taskId, userId) {
+async function updateTaskById(updateDetails, taskId, userId) {
     try {
         if (!taskId) {
             throw new Error("Task Id is invalid")
@@ -43,7 +43,7 @@ function updateTaskById(updateDetails, taskId, userId) {
     }
 }
 
-function deleteTaskById(taskId, userId) {
+async function deleteTaskById(taskId, userId) {
     try {
         if (!taskId) {
             throw new Error("Task Id is invalid")
