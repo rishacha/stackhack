@@ -36,7 +36,7 @@ function updateTaskById(updateDetails, taskId, userId) {
         if (updateValid.error) {
             throw new Error(updateValid.error.details[0].message, 400)
         } else {
-            await TaskModel.findOneAndUpdate({ "taskId": taskId, "userId": userId }, updateDetails, { upsert: true });
+            await TaskModel.findOneAndUpdate({ "taskId": taskId, "userId": userId }, updateDetails, { upsert: false });
         }
     } catch (err) {
         throw new Error("Could not update task - " + err.message)
@@ -54,7 +54,7 @@ function deleteTaskById(taskId, userId) {
 
         await TaskModel.deleteOne({ "taskId": taskId, "userId": userId });
     } catch (err) {
-        throw new Error("Could not delete task by Id")
+        throw new Error("Could not delete task by Id - "+err.message)
     }
 }
 

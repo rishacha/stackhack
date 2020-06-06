@@ -25,7 +25,7 @@ var taskSchema = new Schema({
     }, // 0 - New, 1 - In-Progress, 2 - Completed (int)
     dueDate:{
         type:Date, // timestamp
-        required:[false]
+        required:false
     },
     creationDate:{
         type:Date,
@@ -39,11 +39,11 @@ var taskSchema = new Schema({
         },
         labels:{
             type:[String], // array of tags
-            required:[false]
+            required:false
         },
         desc:{
             type:String, 
-            required:[false]
+            required:false
         },
     }
     

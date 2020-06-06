@@ -6,7 +6,6 @@ import TaskDAO from 'task-service'
 router.post('/create', auth, async (req, res, next) => {
     try {
         await TaskDAO.createTask(req.userId)
-        res.status()
         res.send("Task created successfully")
     } catch (err) {
         next(err)
@@ -16,8 +15,9 @@ router.post('/create', auth, async (req, res, next) => {
 // Read
 router.get('/all', auth, async (req, res, next) => {
     try {
-        res.status(200)
-        res.send(await TaskDAO.getAllTasks(req.userId))
+        res.send(
+            await TaskDAO.getAllTasks(req.userId)
+            )
     } catch (err) {
         next(err)
     }
@@ -28,7 +28,6 @@ router.get('/all', auth, async (req, res, next) => {
 router.put('/update', auth, async (req, res, next) => {
     try {
         await TaskDAO.updateTaskById(req.updateDetails,req.taskId,req.userId)
-        res.status(200)
         res.send("Task updated successfully")
     } catch (err) {
         next(err)
@@ -39,7 +38,6 @@ router.put('/update', auth, async (req, res, next) => {
 router.delete('/delete', auth, async (req, res, next) => {
     try {
         await TaskDAO.deleteTaskById(req.taskId,req.userId)
-        res.status(200)
         res.send("Task deleted successfully")
     } catch (err) {
         next(err)
