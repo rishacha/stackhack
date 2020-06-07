@@ -37,7 +37,13 @@ module.exports = function (app) {
     app.use(urlConstants.taskURL, task);
 
     app.use(compression({ filter: shouldCompress }));
-    // app.use((err, req, res, next) => GlobalError(req, res, next, err));
+    app.use((err, req, res, next) => {
+        if (res.headersSent) {
+            return next(err)
+        }
+        res.status(500).send({ "error": err })
+        // res.render('error', { error: err })
+    });
 
 
 }

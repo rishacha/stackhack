@@ -1,7 +1,8 @@
 # No bash, can still use once confident
 # FROM node:alpine
 
-FROM node
+FROM node as dev
+
 RUN npm install -g nodemon
 
 RUN mkdir -p /app/server
