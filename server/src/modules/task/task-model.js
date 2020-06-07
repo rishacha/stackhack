@@ -1,6 +1,6 @@
 //Require Mongoose
 var mongoose = require('mongoose');
-
+const taskCollection = require('../../constants/MongoCollection').taskCollectionName;
 //Define a schema
 var Schema = mongoose.Schema;
 
@@ -72,4 +72,4 @@ taskSchema.statics={
 */
 
 
-module.exports = mongoose.model("TaskModel",taskSchema)
+module.exports = mongoose.model("Task",taskSchema,taskCollection)

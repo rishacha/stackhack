@@ -1,7 +1,5 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 const TaskModel = require('./task-model');
-import {taskList} from './task-seed'
+const { setupDB } = require('../../test/test-setup')
 
 // Sample Create Data
 const taskData = {  
@@ -20,33 +18,34 @@ const taskData = {
 // May require additional time for downloading MongoDB binaries
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
-describe('Task Model Test', () => {
-    let mongoServer;
-    const opts = { 
-        // useMongoClient: true 
-        useNewUrlParser: true, 
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useFindAndModify:false
-    }; // remove this option if you use mongoose 5 and above
-    beforeAll(async () => {
-        try {
-            mongoServer = new MongoMemoryServer();
-            const mongoUri = await mongoServer.getUri();
+setupDB('task-testing', false)
 
-            // Create Connection
-            await mongoose.connect(mongoUri, opts, (err) => {
+describe('Task Model Test', () => {
+    // let mongoServer;
+    // const opts = { 
+    //     // useMongoClient: true 
+    //     useNewUrlParser: true, 
+    //     useCreateIndex: true,
+    //     useUnifiedTopology: true,
+    //     useFindAndModify:false
+    // }; // remove this option if you use mongoose 5 and above
+    // beforeAll(async () => {
+    //     try {
+    //         mongoServer = new MongoMemoryServer();
+    //         const mongoUri = await mongoServer.getUri();
+
+    //         // Create Connection
+    //         await mongoose.connect(mongoUri, opts, (err) => {
+    //             if (err) console.error(err);
+    //         });
             
-            if (err) console.error(err);
-            });
-            
-            // Seed the db
-            await TaskModel.insertMany(taskList)
-        } catch (err){
-            console.error("Error in Model Init ! "+err.message)
-        }
+    //         // Seed the db
+    //         await TaskModel.insertMany(taskList)
+    //     } catch (err){
+    //         console.error("Error in Model Init ! "+err.message)
+    //     }
         
-    });
+    // });
     // Delete
     it("should delete a task with a particular UserID + TaskID",async () => {
         await TaskModel.deleteOne(
@@ -137,9 +136,9 @@ describe('Task Model Test', () => {
     
     // Upsert a task?
 
-    afterAll(async () => {
-        // console.log("Test")
-        await mongoose.disconnect();
-        await mongoServer.stop();
-    });
+    // afterAll(async () => {
+    //     // console.log("Test")
+    //     await mongoose.disconnect();
+    //     await mongoServer.stop();
+    // });
 })

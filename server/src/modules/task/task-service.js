@@ -3,13 +3,13 @@
 import TaskModel from './task-model'
 import uuid from 'node-uuid'
 import { isTaskValid, isUpdateValid } from './task-validation'
-import e from 'express';
+// import e from 'express';
 
 async function getAllTasks(userId) {
     try {
         if (userId) {
-            taskList = await TaskModel.find({ "userId": userId });
-            return taskList
+            let taskList = await TaskModel.find({ "userId": userId });
+            return taskList.map(e=>delete e.userId)
         } else {
             throw new Error("User Id is not valid")
         }
@@ -65,10 +65,11 @@ async function createTask(taskDetails, userId) {
         }
         const uniqueTaskId = uuid.v1();
 
-        taskData = {
+        let taskData = {
             ...taskDetails,
             "userId": userId,
-            "taskId": uniqueTaskId
+            "taskId": uniqueTaskId,
+            "creationDate":Date.now()
         }
         const taskValid = isTaskValid(taskData)
         if (taskValid.error) {
@@ -76,6 +77,7 @@ async function createTask(taskDetails, userId) {
         } else {
             let taskInstance = new TaskModel(taskData)
             await taskInstance.save();
+            return {"taskId":taskData.taskId,"message":"Task updated successfully"};
         }
 
     } catch (err) {

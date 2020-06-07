@@ -2,12 +2,16 @@ const express = require('express');
 const router = express.Router();
 import TaskDAO from './task-service'
 import auth from '../../middleware/auth'
+const logger = require('../../startup/logger')
 // Create 
 router.post('/create', auth, async (req, res, next) => {
     try {
-        await TaskDAO.createTask(req.userId)
-        res.send("Task created successfully")
+        // logger.error(req.body)
+        // logger.error(req.userId)
+        let msg = await TaskDAO.createTask(req.body,req.userId)
+        res.send(msg)
     } catch (err) {
+        logger.error(err.stack)
         next(err)
     }
 })
@@ -19,6 +23,7 @@ router.get('/all', auth, async (req, res, next) => {
             await TaskDAO.getAllTasks(req.userId)
             )
     } catch (err) {
+        logger.error(err.stack)
         next(err)
     }
 
@@ -27,9 +32,10 @@ router.get('/all', auth, async (req, res, next) => {
 // Update
 router.put('/update', auth, async (req, res, next) => {
     try {
-        await TaskDAO.updateTaskById(req.updateDetails,req.taskId,req.userId)
+        await TaskDAO.updateTaskById(req.body.updateDetails,req.body.taskId,req.userId)
         res.send("Task updated successfully")
     } catch (err) {
+        logger.error(err.stack)
         next(err)
     }
 })
@@ -37,9 +43,10 @@ router.put('/update', auth, async (req, res, next) => {
 // Delete
 router.delete('/delete', auth, async (req, res, next) => {
     try {
-        await TaskDAO.deleteTaskById(req.taskId,req.userId)
+        await TaskDAO.deleteTaskById(req.body.taskId,req.userId)
         res.send("Task deleted successfully")
     } catch (err) {
+        logger.error(err.stack)
         next(err)
     }
 })

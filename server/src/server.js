@@ -1,9 +1,9 @@
 const express = require("express");
 require('dotenv').config();
-// Assign environment variables
-const port = process.env.PORT || 4000;
-const config = require('./config')
-const logger = require('./startup/logger')
+// // Assign environment variables
+// const port = process.env.PORT || 4000;
+// const config = require('./config')
+// const logger = require('./startup/logger')
 
 // Initiliase an express server
 const app = express();
@@ -17,8 +17,6 @@ require('./startup/db')();
 require('./startup/routes')(app);
 require('./startup/passport');
 require('./startup/globalExceptionHandler');
-
-app.listen(port, () => logger.info(`Listening on port ${port}`));
 
 module.exports = {
   app
